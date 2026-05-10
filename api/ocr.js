@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+      model: 'claude-sonnet-4-6',
       max_tokens: 1024,
       messages: [{
         role: 'user',
@@ -29,7 +29,20 @@ export default async function handler(req, res) {
           },
           {
             type: 'text',
-            text: 'This image contains Spanish-German word pairs for language learning. Extract all word pairs you can find. Return ONLY a valid JSON array like: [{"source_word": "Spanish word or phrase", "target_word": "German translation"}]. If no pairs found, return []. No explanation, no markdown, just the JSON array.',
+            text: `You are processing an image from a Spanish-German vocabulary learning app.
+
+Your tasks:
+1. Extract all Spanish-German word pairs visible in the image.
+2. Fix OCR typos: restore correct Spanish spelling (accents: é, á, í, ó, ú, ñ, ü) and correct German spelling (umlauts: ä, ö, ü, ß, capitalised nouns).
+3. Verify semantic coherence: each Spanish word must genuinely translate to its paired German word(s). If pairs appear mismatched based on meaning, re-pair them correctly.
+4. If multiple German translations exist for one Spanish word, combine them as a single comma-separated entry in one object.
+
+Rules:
+- Only include pairs actually visible in the image — do not invent new translations or add extra meanings.
+- If a pair is domain-specific or unusual but plausible, keep it as-is.
+- Return ONLY a valid JSON array: [{"source_word": "Spanish word or phrase", "target_word": "German translation(s)"}]
+- If no pairs found, return [].
+- No explanation, no markdown, just the JSON array.`,
           },
         ],
       }],
