@@ -71,11 +71,25 @@ export default function SophiaWords() {
       setProcessed((n) => n + 1);
     }
 
-    if (allPairs.length === 0) {
-      allPairs.push({ id: idCounter++, source_word: '', target_word: '' });
+    // Merge duplicate source_words — same Spanish word gets one row
+    // with comma-separated German translations
+    const mergedMap = new Map(); // normalized key → index in merged array
+    const merged = [];
+    for (const pair of allPairs) {
+      const key = pair.source_word.trim().toLowerCase();
+      if (mergedMap.has(key)) {
+        merged[mergedMap.get(key)].target_word += ', ' + pair.target_word.trim();
+      } else {
+        mergedMap.set(key, merged.length);
+        merged.push({ id: idCounter++, source_word: pair.source_word.trim(), target_word: pair.target_word.trim() });
+      }
     }
 
-    setPairs(allPairs);
+    if (merged.length === 0) {
+      merged.push({ id: idCounter++, source_word: '', target_word: '' });
+    }
+
+    setPairs(merged);
     setPhase('review');
   }, []);
 
