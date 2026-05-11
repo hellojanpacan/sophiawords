@@ -27,7 +27,7 @@ export default async function handler(req, res) {
     await fetch(NTFY_URL, {
       method: 'POST',
       headers: {
-        'Title': title,
+        'Title': encodeURIComponent(title),
         'Priority': '3',
         'Tags': 'es',
         'Click': APP_URL,
