@@ -26,15 +26,14 @@ export default async function handler(req, res) {
   try {
     await fetch(NTFY_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        title,
-        message,
-        priority: 3,
-        tags: ['es'],
-        click: APP_URL,
-        actions: [{ action: 'view', label: 'Comenzar', url: APP_URL, clear: true }],
-      }),
+      headers: {
+        'Title': title,
+        'Priority': '3',
+        'Tags': 'es',
+        'Click': APP_URL,
+        'Actions': `view, Comenzar, ${APP_URL}, clear=true`,
+      },
+      body: message,
     });
     res.json({ ok: true, title });
   } catch (e) {
