@@ -3,11 +3,11 @@ const NTFY_URL = 'https://ntfy.sh/Sophialingo_aorn54';
 const APP_URL = 'https://sophialingo.vercel.app';
 
 const MESSAGES = [
-  { title: '¡Todavía hay tiempo, Sophia! 🌙',  message: 'Aún no has practicado hoy — ¡solo 5 minutos!' },
-  { title: '¡La noche es joven! 🌙',            message: 'No olvides tus palabras de hoy 📚' },
-  { title: 'Último aviso del día 🔔',           message: '¡Practica un poco antes de dormir, Sophia!' },
-  { title: '¿Aún no has practicado? 😴',        message: 'Cinco minutitos antes de dormir' },
-  { title: 'El día casi termina 🌛',             message: '¡Sophia, tus palabras te necesitan!' },
+  { title: 'Todavia hay tiempo, Sophia!', message: 'Aún no has practicado hoy — ¡solo 5 minutos!' },
+  { title: 'La noche es joven!',          message: 'No olvides tus palabras de hoy 📚' },
+  { title: 'Ultimo aviso del dia',        message: '¡Practica un poco antes de dormir, Sophia!' },
+  { title: 'Aun no has practicado?',      message: 'Cinco minutitos antes de dormir' },
+  { title: 'El dia casi termina',         message: '¡Sophia, tus palabras te necesitan!' },
 ];
 
 export default async function handler(req, res) {
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     await fetch(NTFY_URL, {
       method: 'POST',
       headers: {
-        'Title': encodeURIComponent(title),
+        'Title': title,
         'Priority': '4',
         'Tags': 'es',
         'Click': APP_URL,
