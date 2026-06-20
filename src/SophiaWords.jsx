@@ -61,7 +61,7 @@ export default function SophiaWords() {
         if (Array.isArray(data.pairs)) {
           data.pairs.forEach((p) => {
             if (p.source_word && p.target_word) {
-              allPairs.push({ id: idCounter++, source_word: p.source_word, target_word: p.target_word });
+              allPairs.push({ id: idCounter++, source_word: p.source_word, target_word: p.target_word, example_sentence: p.example_sentence || '' });
             }
           });
         }
@@ -81,7 +81,7 @@ export default function SophiaWords() {
         merged[mergedMap.get(key)].target_word += ', ' + pair.target_word.trim();
       } else {
         mergedMap.set(key, merged.length);
-        merged.push({ id: idCounter++, source_word: pair.source_word.trim(), target_word: pair.target_word.trim() });
+        merged.push({ id: idCounter++, source_word: pair.source_word.trim(), target_word: pair.target_word.trim(), example_sentence: pair.example_sentence || '' });
       }
     }
 
@@ -117,7 +117,7 @@ export default function SophiaWords() {
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({
           action: 'addWords',
-          words: valid.map((p) => ({ source_word: p.source_word.trim(), target_word: p.target_word.trim() })),
+          words: valid.map((p) => ({ source_word: p.source_word.trim(), target_word: p.target_word.trim(), example_sentence: (p.example_sentence || '').trim() })),
           source_lang: 'es',
           target_lang: 'de',
           source: 'ocr',
