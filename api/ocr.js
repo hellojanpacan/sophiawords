@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 1024,
+      max_tokens: 2048,
       messages: [{
         role: 'user',
         content: [
@@ -36,13 +36,16 @@ Your tasks:
 2. Fix OCR typos: restore correct Spanish spelling (accents: é, á, í, ó, ú, ñ, ü) and correct German spelling (umlauts: ä, ö, ü, ß, capitalised nouns).
 3. Verify semantic coherence: each Spanish word must genuinely translate to its paired German word(s). If pairs appear mismatched based on meaning, re-pair them correctly.
 4. If multiple German translations exist for one Spanish word, combine them as a single comma-separated entry in one object.
-5. For each word pair, write one example sentence in Spanish (example_sentence).
+5. For each word pair, write THREE distinct example sentences in Spanish:
+   example_sentence, example_sentence_2, example_sentence_3.
+   Each must independently satisfy all sentence rules below.
+   Make them varied — different contexts or angles within the EU/political domain.
 
 Rules for extraction:
 - Only include pairs actually visible in the image — do not invent new translations or add extra meanings.
 - If a pair is domain-specific or unusual but plausible, keep it as-is.
 
-Rules for example sentences (follow all of these — they are strict):
+Rules for example sentences (apply to all three — these are strict):
 - SELF-CHECK REQUIRED: Before returning, verify that each sentence actually contains the source_word (or a directly recognisable conjugated/declined form). If you cannot embed the word naturally, write "—" for that field. NEVER substitute a different word.
 - For multi-word expressions or idioms, the entire phrase must appear in the sentence, not just one word of it.
 - The sentence must provide enough surrounding context that a reader could infer the word's rough meaning without knowing it — avoid one-clause sentences with no narrative.
@@ -50,9 +53,10 @@ Rules for example sentences (follow all of these — they are strict):
 - Preferred length: 20–35 words.
 - Avoid first-person constructions (e.g. "solicito") when source_word is an infinitive — prefer third-person or impersonal constructions.
 - The word's usage in the sentence must be semantically consistent with the German translation given.
+- The three sentences must be meaningfully different from each other — do not paraphrase.
 
 Return ONLY a valid JSON array:
-[{"source_word": "Spanish word or phrase", "target_word": "German translation(s)", "example_sentence": "..."}]
+[{"source_word": "...", "target_word": "...", "example_sentence": "...", "example_sentence_2": "...", "example_sentence_3": "..."}]
 If no pairs found, return [].
 No explanation, no markdown, just the JSON array.`,
           },
